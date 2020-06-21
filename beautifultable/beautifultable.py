@@ -768,6 +768,26 @@ class BTColumns(object):
         return self._table._ncol
     
     def __getitem__(self, key):
+        """Get a column, or a new table by slicing.
+
+        Parameters
+        ----------
+
+        key : int, slice, str
+            If key is an `int`, returns column at index `key`.
+            If key is an `str`, returns first column with heading `key`.
+            If key is a slice object, returns a new sliced table.
+
+        Raises
+        ------
+
+        TypeError
+            If key is not of type int, slice or str.
+        IndexError
+            If `int` key is out of range.
+        KeyError
+            If `str` key is not in header.
+        """
         if isinstance(key, int):
             pass
         elif isinstance(key, slice):
@@ -794,6 +814,26 @@ class BTColumns(object):
         return (row[key] for row in self._table._data)
 
     def __delitem__(self, key):
+        """Delete a column, or multiple columns by slicing.
+
+        Parameters
+        ----------
+
+        key : int, slice, str
+            If key is an `int`, deletes column at index `key`.
+            If key is a slice object, deletes multiple columns.
+            If key is an `str`, deletes the first column with heading `key`
+
+        Raises
+        ------
+
+        TypeError
+            If key is not of type int, slice or str.
+        IndexError
+            If `int` key is out of range.
+        KeyError
+            If `str` key is not in header.
+        """
         if isinstance(key, (int, basestring, slice)):
             del self.alignment[key]
             del self.width[key]
@@ -814,6 +854,26 @@ class BTColumns(object):
             )
 
     def __setitem__(self, key, value):
+        """Update a column, or multiple columns by slicing.
+
+        Parameters
+        ----------
+
+        key : int, slice, str
+            If key is an `int`, updates column at index `key`.
+            If key is an `str`, updates first column with heading `key``column`.
+            If key is a slice object, updates multiple columns.
+
+        Raises
+        ------
+
+        TypeError
+            If key is not of type int, slice or str.
+        IndexError
+            If `int` key is out of range.
+        KeyError
+            If `str` key is not in header
+        """
         if not isinstance(key, (int, basestring, slice)):
             raise TypeError("column indices must be of type int, str or a slice object")
         for row, new_item in zip(self._table.rows, value):
@@ -983,6 +1043,107 @@ class BTColumns(object):
 
 
 class BeautifulTable(object):
+    """Utility Class to print data in tabular format to terminal.
+    The instance attributes can be used to customize the look of the
+    table. To disable a behaviour, just set its corresponding attribute
+    to an empty string. For example, if Top border should not be drawn,
+    set `top_border_char` to ''.
+
+    Parameters
+    ----------
+    max_width: int, optional
+        maximum width of the table in number of characters. this is ignored
+        when manually setting the width of the columns. if this value is too
+        low with respect to the number of columns and width of padding, the
+        resulting table may override it(default 80).
+    
+    default_alignment : int, optional
+        Default alignment for new columns(default beautifultable.ALIGN_CENTER).
+    
+    default_padding : int, optional
+        Default width of the left and right padding for new columns(default 1).
+    
+    Attributes
+    ----------
+
+    left_border_char : str
+        Character used to draw the left border.
+
+    right_border_char : str
+        Character used to draw the right border.
+
+    top_border_char : str
+        Character used to draw the top border.
+
+    bottom_border_char : str
+        Character used to draw the bottom border.
+
+    header_separator_char : str
+        Character used to draw the line seperating Header from data.
+
+    row_separator_char : str
+        Character used to draw the line seperating two rows.
+
+    column_separator_char : str
+        Character used to draw the line seperating two columns.
+
+    intersection_char : str
+        Character used to draw intersection of a vertical and horizontal
+        line. Disabling it just draws the horizontal line char in it's place.
+        (DEPRECATED).
+
+    intersect_top_left : str
+        Left most character of the top border.
+
+    intersect_top_mid : str
+        Intersection character for top border.
+
+    intersect_top_right : str
+        Right most character of the top border.
+
+    intersect_header_left : str
+        Left most character of the header separator.
+
+    intersect_header_mid : str
+        Intersection character for header separator.
+
+    intersect_header_right : str
+        Right most character of the header separator.
+
+    intersect_row_left : str
+        Left most character of the row separator.
+
+    intersect_row_mid : str
+        Intersection character for row separator.
+
+    intersect_row_right : str
+        Right most character of the row separator.
+
+    intersect_bottom_left : str
+        Left most character of the bottom border.
+
+    intersect_bottom_mid : str
+        Intersection character for bottom border.
+
+    intersect_bottom_right : str
+        Right most character of the bottom border.
+
+    numeric_precision : int
+        All float values will have maximum number of digits after the decimal,
+        capped by this value(Default 3).
+
+    serialno : bool
+        Whether automatically generated serial number should be printed for
+        each row(Default False).
+
+    serialno_header : str
+        The header of the autogenerated serial number column. This value is
+        only used if serialno is True(Default SN).
+
+    detect_numerics : bool
+        Whether numeric strings should be automatically detected(Default True).
+    """
+
     @deprecated_param('1.0.0', '1.2.0', 'max_width', 'maxwidth')
     def __init__(
         self,
