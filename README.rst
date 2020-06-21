@@ -115,7 +115,7 @@ Installation
 
 ::
 
-    pip install beautifultable
+    python3 -m pip install beautifultable
 
 .. inclusion-marker-install-end
 

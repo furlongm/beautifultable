@@ -5,9 +5,6 @@ from .__version__ import __license__
 from .beautifultable import BeautifulTable
 from . import enums
 from .enums import *  # noqa
-from .exceptions import BeautifulTableDeprecationWarning
-
-import warnings
 
 
 __all__ = [
@@ -34,6 +31,3 @@ for token in dir(enums):
     ):
         setattr(BeautifulTable, token, getattr(enums, token))
         __all__.append(token)
-
-
-warnings.simplefilter("always", BeautifulTableDeprecationWarning)

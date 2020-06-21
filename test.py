@@ -615,7 +615,7 @@ class TableOperationsTestCase(unittest.TestCase):
         #     self.assertEqual(self.table[index], test_table[index])
 
         test_table = BeautifulTable()
-        test_table.from_csv("beautiful_table.csv", header_exists=False)
+        test_table.from_csv("beautiful_table.csv", header=False)
         self.assertEqual(len(self.table), len(test_table) - 1)
 
         # Teardown step.

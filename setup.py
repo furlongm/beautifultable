@@ -3,7 +3,7 @@ import os
 from setuptools import setup
 from codecs import open
 
-
+install_requires = ['wcwidth']
 extras_require = {}
 
 this_dir = os.path.abspath(os.path.dirname(__file__))
@@ -31,6 +31,7 @@ setup(
     license=about["__license__"],
     keywords="table terminal ascii",
     extras_require=extras_require,
+    install_requires=install_requires,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
